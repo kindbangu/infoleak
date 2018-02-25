@@ -11,9 +11,9 @@ import csv
 
 def get_usb_info_from_registry():
 	global device_name, serial_number, volume_name, drive_name
-	varSubkey = "SYSTEM\\ControlSet001\\Enum\\USBSTOR" # 서브레지스트리 목록 지정
-	varReg = ConnectRegistry(None, HKEY_LOCAL_MACHINE) # 루트 레지스트리 핸들 객체 얻기
-	varKey = OpenKey(varReg, varSubkey) # 레지스트리 핸들 객체 얻기
+	varSubkey = "SYSTEM\\ControlSet001\\Enum\\USBSTOR"
+	varReg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
+	varKey = OpenKey(varReg, varSubkey)
 	device_name = []
 	serial_number = []
 	volume_name = []
@@ -22,9 +22,9 @@ def get_usb_info_from_registry():
 	wr = csv.writer(f)
 	for i in range(1024):
 		try:
-			keyname = EnumKey(varKey, i) # 지정한 레지스트리의 하위 키값 조회
-			varSubkey2 = "%s\\%s" % (varSubkey, keyname) # 하위 레지스트리 목록 생성 : 상위 레지스트리 목록과 하위 키값 결합
-			varKey2 = OpenKey(varReg, varSubkey2) # 레지스트리 핸들 객체 얻기
+			keyname = EnumKey(varKey, i)
+			varSubkey2 = "%s\\%s" % (varSubkey, keyname)
+			varKey2 = OpenKey(varReg, varSubkey2)
 			for j in range(1024):
 				try:
 					keyname2 = EnumKey(varKey2, j)
@@ -33,7 +33,7 @@ def get_usb_info_from_registry():
 					serial_number.append(keyname2)
 					for k in range(1024):
 						try:
-							n, v, t = EnumValue(varKey3, k) # 레지스트리 가진 데이터 얻기 : 값이름, 데이터형, 데이터 조회
+							n, v, t = EnumValue(varKey3, k)
 							if n == "FriendlyName":
 								device_name.append(v)
 						except:
@@ -51,15 +51,15 @@ def get_usb_info_from_registry():
 
 
 	#get volume name
-	varSubkey = "SYSTEM\\ControlSet001\\Enum\\WpdBusEnumRoot" # 서브레지스트리 목록 지정
-	varReg = ConnectRegistry(None, HKEY_LOCAL_MACHINE) # 루트 레지스트리 핸들 객체 얻기
-	varKey = OpenKey(varReg, varSubkey) # 레지스트리 핸들 객체 얻기
+	varSubkey = "SYSTEM\\ControlSet001\\Enum\\WpdBusEnumRoot"
+	varReg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
+	varKey = OpenKey(varReg, varSubkey)
 
 	for i in range(1024):
 		try:
-			keyname = EnumKey(varKey, i) # 지정한 레지스트리의 하위 키값 조회
-			varSubkey2 = "%s\\%s" % (varSubkey, keyname) # 하위 레지스트리 목록 생성 : 상위 레지스트리 목록과 하위 키값 결합
-			varKey2 = OpenKey(varReg, varSubkey2) # 레지스트리 핸들 객체 얻기
+			keyname = EnumKey(varKey, i)
+			varSubkey2 = "%s\\%s" % (varSubkey, keyname)
+			varKey2 = OpenKey(varReg, varSubkey2)
 			for j in range(1024):
 				try:
 					keyname2 = EnumKey(varKey2, j)
@@ -67,7 +67,7 @@ def get_usb_info_from_registry():
 					varKey3 = OpenKey(varReg, varSubkey3)
 					for k in range(1024):
 						try:
-							n, v, t = EnumValue(varKey3, k) # 레지스트리 가진 데이터 얻기 : 값이름, 데이터형, 데이터 조회
+							n, v, t = EnumValue(varKey3, k)
 							if n == "FriendlyName":
 								volume_name.append(v)
 						except:
@@ -85,19 +85,19 @@ def get_usb_info_from_registry():
 
 
 	#get drive name
-	varSubkey = "SOFTWARE\\Microsoft\\Windows Portable Devices\\Devices" # 서브레지스트리 목록 지정
-	varReg = ConnectRegistry(None, HKEY_LOCAL_MACHINE) # 루트 레지스트리 핸들 객체 얻기
-	varKey = OpenKey(varReg, varSubkey) # 레지스트리 핸들 객체 얻기
+	varSubkey = "SOFTWARE\\Microsoft\\Windows Portable Devices\\Devices"
+	varReg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
+	varKey = OpenKey(varReg, varSubkey)
 
 	for i in range(1024):
 		try:
-			keyname = EnumKey(varKey, i) # 지정한 레지스트리의 하위 키값 조회
-			varSubkey2 = "%s\\%s" % (varSubkey, keyname) # 하위 레지스트리 목록 생성 : 상위 레지스트리 목록과 하위 키값 결합
-			varKey2 = OpenKey(varReg, varSubkey2) # 레지스트리 핸들 객체 얻기
+			keyname = EnumKey(varKey, i)
+			varSubkey2 = "%s\\%s" % (varSubkey, keyname)
+			varKey2 = OpenKey(varReg, varSubkey2)
 			try:
 				for k in range(1024):
 					if keyname.split('#')[-2] in serial_number:
-						n, v, t = EnumValue(varKey2, k) # 레지스트리 가진 데이터 얻기 : 값이름, 데이터형, 데이터 조회
+						n, v, t = EnumValue(varKey2, k)
 						if n == "FriendlyName":
 							drive_name.append(v)
 			except:
